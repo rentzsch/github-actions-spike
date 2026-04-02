@@ -44,17 +44,12 @@ int main(int argc __attribute__((unused)),
   // Linux x86.
 
   const char *arch = "x86";
-  bool hasNativeSHA1 = false;
-  bool hasNativeAES = false;
 
-  // Check if leaf 7 is available
-  if (__get_cpuid_max(7, NULL) >= 7) {
-    unsigned int eax = 0, ebx = 0, ecx = 0, edx = 0;
-    __cpuid_count(7, 0, eax, ebx, ecx, edx);
-    hasNativeSHA1 = (ecx & (1 << 1)) != 0;
-  }
+  __builtin_cpu_init();
+  bool hasNativeSHA1 = __builtin_cpu_supports("sha");
 
   // AES-NI is indicated by CPUID leaf 1, ECX bit 25
+  bool hasNativeAES = false;
   {
     unsigned int eax = 0, ebx = 0, ecx = 0, edx = 0;
     if (__get_cpuid(1, &eax, &ebx, &ecx, &edx)) {
