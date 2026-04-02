@@ -12,7 +12,7 @@ ifeq ($(shell uname -s),Darwin)
 #
 build:
 	cc $(CCFLAGS) -o $(BINNAME)-arm64 *.c
-	cc $(CCFLAGS) -arch x86_64 -o $(BINNAME)-x64 *.c
+	cc $(CCFLAGS) -arch x86_64 -mmacosx-version-min=10.5 -o $(BINNAME)-x64 *.c
 
 test:
 	./$(BINNAME)-arm64
